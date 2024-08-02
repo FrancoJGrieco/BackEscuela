@@ -1,0 +1,231 @@
+POST http://localhost:3030/alumnos
+content-type: application/json
+
+{
+    "nombre": "Diego",
+    "apellido": "Zenarrusa",
+    "edad": 27
+}
+
+####
+
+GET http://localhost:3030/alumnos
+
+####
+
+GET http://localhost:3030/alumnos/663be5ae72e54c0e45cf717f
+
+###
+
+PUT http://localhost:3030/alumnos/663be5ae72e54c0e45cf717f
+content-type: application/json
+
+{
+    "nombre": "Roque",
+    "apellido": "Grieco",
+    "edad": 65
+}
+
+####
+
+DELETE http://localhost:3030/alumnos/663d3a691f07b11f59eac40f
+
+####
+
+POST http://localhost:3030/signup
+content-type: application/json
+
+{
+    "user": "franco32@mail.com",
+    "password": "franco123"
+}
+
+####
+
+POST http://localhost:3030/login
+content-type: application/json
+
+{
+    "user": "franco3@mail.com",
+    "password": "franco123"
+}
+
+####
+
+GET http://localhost:3030/check-auth
+
+####
+
+GET http://localhost:3030/logout
+
+####
+
+GET http://localhost:3030/materias
+
+####
+
+POST http://localhost:3030/materias
+content-type: application/json
+
+{
+    "nombre": "Ingles III",
+    "descripcion": "Materia de programacion",
+    "year": "3"
+}
+
+####
+
+GET http://localhost:3030/materias/664636681cf06c1bcb5a5419
+
+###
+
+PUT http://localhost:3030/materias/664636681cf06c1bcb5a5419
+content-type: application/json
+
+{
+    "nombre": "Programación IIII",
+    "descripcion": "Materia de programas",
+}
+
+####
+
+DELETE http://localhost:3030/materias/664913503e5cc76d0283f992
+
+####
+
+GET http://localhost:3030/cursos
+
+####
+
+POST http://localhost:3030/cursos
+content-type: application/json
+
+{
+    "titulatura": "Tecnico en algo",
+    "years": "3"
+}
+
+####
+
+GET http://localhost:3030/cursos/664507ede73af82bb7a7609f
+
+###
+
+PUT http://localhost:3030/cursos/664636431cf06c1bcb5a5417
+content-type: application/json
+
+{
+  "titulatura": "Tecnico en computación",
+  "years": "3",
+  "materias": ["664a709b99f50f84c7556c37", 
+  "664ba679b67fc9a03df6efb9", 
+  "669b138d463e3dd40da557ec"]
+}
+
+####
+
+DELETE http://localhost:3030/cursos/664507ede73af82bb7a7609f
+
+####
+
+GET http://localhost:3030/comisiones
+
+####
+
+POST http://localhost:3030/comisiones
+content-type: application/json
+
+{
+    "numero": "1-603",
+    "year": "1",
+    "materias": ["66a1a5fc232a960427ca68fb"]
+}
+
+####
+
+GET http://localhost:3030/comisiones/664bdc07f40c97ae01895990
+
+###
+
+PUT http://localhost:3030/comisiones/664bdc07f40c97ae01895990
+content-type: application/json
+
+{
+    "numero": "1-603",
+    "year": "1",
+    "materias": ["664a709b99f50f84c7556c37", "664ba679b67fc9a03df6efb9"],
+    "alumnos": ["663be5ae72e54c0e45cf717f", "664ba5dab67fc9a03df6efac"]
+}
+
+####
+
+DELETE http://localhost:3030/comisiones/664509eced0c0610e28880b7
+
+####
+
+GET http://localhost:3030/boletines
+
+####
+
+POST http://localhost:3030/boletines
+content-type: application/json
+
+{
+    "curso":"Tecnico en algo",
+    "comision":"2-605",
+    "year":"2024",
+    "alumno":"663be5ae72e54c0e45cf717f",
+    "materias":["66a7190149afe0d3950c627d"]
+}
+
+####
+
+GET http://localhost:3030/boletines/66a7124e58dd4cd3f3938a90
+
+###
+
+PUT http://localhost:3030/boletines/66a7124e58dd4cd3f3938a90
+content-type: application/json
+
+{
+    "curso":"Tecnico en algo",
+    "comision":"2-605",
+    "year":"2024",
+    "alumno":"663be5ae72e54c0e45cf717f",
+    "materias":["66a7190149afe0d3950c627d"]
+}
+
+####
+
+DELETE http://localhost:3030/comisiones/664509eced0c0610e28880b7
+
+####
+
+GET http://localhost:3030/materias_boletin
+
+####
+
+POST http://localhost:3030/materias_boletin
+content-type: application/json
+
+{
+    "materia":"66a1a5fc232a960427ca68fb",
+    "notas":[]
+}
+
+####
+
+GET http://localhost:3030/materias_boletin/66a7190149afe0d3950c627d
+
+###
+
+PUT http://localhost:3030/materias_boletin/66a7190149afe0d3950c627d
+content-type: application/json
+
+{
+    "notas":[6,5]
+}
+
+####
+
+DELETE http://localhost:3030/materias_boletin/66a7190149afe0d3950c627d
