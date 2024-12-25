@@ -38,6 +38,25 @@ const fetchBoletin = async (req, res) => {
     res.sendStatus(400)
   }
 }
+const fetchBoletinAlumno = async (req, res) => {
+  try {
+    const id = req.params.id
+
+    const boletin = await Boletin.findOne({ alumno: id })
+      .populate('alumno')
+      .populate({
+        path: 'materias',
+        populate: {
+          path: 'materia',
+          model: 'Materia'
+        }
+      })
+    res.json({ boletin })
+  } catch (err) {
+    console.log(err)
+    res.sendStatus(400)
+  }
+}
 
 const createBoletin = async (req, res) => {
   try {
@@ -115,6 +134,7 @@ const errorPage = (req, res) => {
 module.exports = {
   fetchBoletines,
   fetchBoletin,
+  fetchBoletinAlumno,
   createBoletin,
   updateBoletin,
   deleteBoletin,

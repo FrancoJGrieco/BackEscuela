@@ -64,6 +64,7 @@ app.delete('/comisiones/:id', comisionesController.deleteComision)
 // Rutas boletines
 app.get('/boletines', boletinesController.fetchBoletines)
 app.get('/boletines/:id', boletinesController.fetchBoletin)
+app.get('/boletinesa/:id', boletinesController.fetchBoletinAlumno)
 app.post('/boletines', boletinesController.createBoletin)
 app.put('/boletines/:id', boletinesController.updateBoletin)
 app.delete('/boletines/:id', boletinesController.deleteBoletin)
