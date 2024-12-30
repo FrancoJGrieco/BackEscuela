@@ -3,7 +3,8 @@ const mongoose = require('mongoose')
 const alumnoSchema = new mongoose.Schema({
   nombre: String,
   apellido: String,
-  edad: Number
+  edad: Number,
+  dni: String
 })
 
 const Alumno = mongoose.model('Alumno', alumnoSchema)

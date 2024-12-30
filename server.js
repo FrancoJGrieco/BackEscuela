@@ -36,6 +36,7 @@ app.get('/check-auth', requireAuth, usuariosController.checkAuth)
 // Rutas alumnos
 app.get('/alumnos', alumnosController.fetchAlumnos)
 app.get('/alumnos/:id', alumnosController.fetchAlumno)
+app.get('/alumnos/:id', alumnosController.fetchAlumnoByDNI)
 app.post('/alumnos', alumnosController.createAlumno)
 app.put('/alumnos/:id', alumnosController.updateAlumno)
 app.delete('/alumnos/:id', alumnosController.deleteAlumno)

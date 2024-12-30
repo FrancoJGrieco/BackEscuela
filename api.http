@@ -3,8 +3,9 @@ content-type: application/json
 
 {
     "nombre": "Diego",
-    "apellido": "Zenarrusa",
-    "edad": 27
+    "apellido": "Zensaarrusa",
+    "edad": 27,
+    "dni": "736287648"
 }
 
 ####
@@ -17,13 +18,14 @@ GET http://localhost:3030/alumnos/663be5ae72e54c0e45cf717f
 
 ###
 
-PUT http://localhost:3030/alumnos/663be5ae72e54c0e45cf717f
+PUT http://localhost:3030/alumnos/664ba5dab67fc9a03df6efac
 content-type: application/json
 
 {
-    "nombre": "Roque",
+    "nombre": "Franco",
     "apellido": "Grieco",
-    "edad": 65
+    "edad": 28,
+    "dni": "237861233"
 }
 
 ####

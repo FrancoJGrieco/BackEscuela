@@ -22,18 +22,31 @@ const fetchAlumno = async (req, res) => {
   }
 }
 
+const fetchAlumnoByDNI = async (req, res) => {
+  try {
+    const dni = req.params.dni
+    const alumno = await Alumno.findOne({ dni })
+    res.json({ alumno })
+  } catch (err) {
+    console.log(err)
+    res.sendStatus(400)
+  }
+}
+
 const createAlumno = async (req, res) => {
   try {
     const {
       nombre,
       apellido,
-      edad
+      edad,
+      dni
     } = req.body
 
     const alumno = await Alumno.create({
       nombre,
       apellido,
-      edad
+      edad,
+      dni
     })
     res.json({ alumno })
   } catch (err) {
@@ -49,10 +62,16 @@ const updateAlumno = async (req, res) => {
     const {
       nombre,
       apellido,
-      edad
+      edad,
+      dni
     } = req.body
 
-    await Alumno.findByIdAndUpdate(id, { nombre, apellido, edad })
+    await Alumno.findByIdAndUpdate(id, {
+      nombre,
+      apellido,
+      edad,
+      dni
+    })
 
     const alumno = await Alumno.findById(id)
 
@@ -83,6 +102,7 @@ const errorPage = (req, res) => {
 module.exports = {
   fetchAlumnos,
   fetchAlumno,
+  fetchAlumnoByDNI,
   createAlumno,
   updateAlumno,
   deleteAlumno,
