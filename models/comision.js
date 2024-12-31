@@ -6,6 +6,10 @@ const comisionSchema = new mongoose.Schema({
   materias: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Materia'
+  }],
+  alumnos: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Alumno'
   }]
 })
 
