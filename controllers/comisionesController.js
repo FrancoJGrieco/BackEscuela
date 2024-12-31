@@ -27,13 +27,15 @@ const createComision = async (req, res) => {
     const {
       numero,
       year,
-      materias
+      materias,
+      alumnos
     } = req.body
 
     const comision = await Comision.create({
       numero,
       year,
-      materias
+      materias,
+      alumnos
     })
     await comision.populate('materias')
 
@@ -51,10 +53,11 @@ const updateComision = async (req, res) => {
     const {
       numero,
       year,
-      materias
+      materias,
+      alumnos
     } = req.body
 
-    await Comision.findByIdAndUpdate(id, { numero, year, materias })
+    await Comision.findByIdAndUpdate(id, { numero, year, materias, alumnos })
 
     const comision = await Comision.findById(id).populate('materias')
 
