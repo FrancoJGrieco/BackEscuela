@@ -2,7 +2,7 @@ const Comision = require('../models/comision')
 
 const fetchComisiones = async (req, res) => {
   try {
-    const comisiones = await Comision.find().populate('materias')
+    const comisiones = await Comision.find().populate('materias').populate('alumnos')
 
     res.json({ comisiones })
   } catch (err) {
@@ -57,9 +57,11 @@ const updateComision = async (req, res) => {
       alumnos
     } = req.body
 
+    console.log(numero, year, materias, alumnos)
+
     await Comision.findByIdAndUpdate(id, { numero, year, materias, alumnos })
 
-    const comision = await Comision.findById(id).populate('materias')
+    const comision = await Comision.findById(id).populate('materias').populate('alumnos')
 
     res.json({ comision })
   } catch (err) {
