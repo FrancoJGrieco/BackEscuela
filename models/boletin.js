@@ -1,13 +1,19 @@
 const mongoose = require('mongoose')
 
 const boletinSchema = new mongoose.Schema({
-  curso: String,
-  comision: String, // también se puede poner que la id solo devuelva el numero de la comisión
-  year: String,
+  curso: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Curso'
+  },
+  comision: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Comision'
+  },
   alumno: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Alumno'
   },
+  year: String, // que curso
   materias: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'MateriaBoletin'

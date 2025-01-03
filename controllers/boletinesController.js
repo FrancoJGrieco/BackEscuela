@@ -2,7 +2,10 @@ const Boletin = require('../models/boletin')
 
 const fetchBoletines = async (req, res) => {
   try {
-    const boletines = await Boletin.find().populate('alumno')
+    const boletines = await Boletin.find()
+      .populate('alumno')
+      .populate('curso')
+      .populate('comision')
       .populate({
         path: 'materias',
         populate: {
@@ -21,10 +24,11 @@ const fetchBoletines = async (req, res) => {
 const fetchBoletin = async (req, res) => {
   try {
     const id = req.params.id
-    // const boletin = await Boletin.findById(id).populate('materias').populate('alumno')
 
     const boletin = await Boletin.findById(id)
       .populate('alumno')
+      .populate('comision')
+      .populate('curso')
       .populate({
         path: 'materias',
         populate: {
@@ -76,7 +80,7 @@ const createBoletin = async (req, res) => {
       materias
     })
 
-    await boletin.populate('alumno')
+    // await boletin.populate('curso').populate('comision').populate('materias')
 
     res.json({ boletin })
   } catch (err) {

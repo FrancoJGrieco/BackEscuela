@@ -2,7 +2,7 @@ const Alumno = require('../models/alumno')
 
 const fetchAlumnos = async (req, res) => {
   try {
-    const alumnos = await Alumno.find()
+    const alumnos = await Alumno.find().populate('boletines')
 
     res.json({ alumnos })
   } catch (err) {
@@ -46,7 +46,8 @@ const createAlumno = async (req, res) => {
       nombre,
       apellido,
       edad,
-      dni
+      dni,
+      boletines: []
     })
     res.json({ alumno })
   } catch (err) {
@@ -63,14 +64,16 @@ const updateAlumno = async (req, res) => {
       nombre,
       apellido,
       edad,
-      dni
+      dni,
+      boletines
     } = req.body
 
     await Alumno.findByIdAndUpdate(id, {
       nombre,
       apellido,
       edad,
-      dni
+      dni,
+      boletines
     })
 
     const alumno = await Alumno.findById(id)
