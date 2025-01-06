@@ -15,6 +15,21 @@ const fetchAlumno = async (req, res) => {
   try {
     const id = req.params.id
     const alumno = await Alumno.findById(id)
+      .populate('boletines')
+      .populate({
+        path: 'boletines',
+        populate: [
+          { path: 'curso', model: 'Curso' },
+          { path: 'comision', model: 'Comision' },
+          { path: 'materias', model: 'MateriaBoletin' },
+          {
+            path: 'materias',
+            model: 'MateriaBoletin',
+            populate: { path: 'materia', model: 'Materia' }
+          }
+        ]
+      })
+
     res.json({ alumno })
   } catch (err) {
     console.log(err)
