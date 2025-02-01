@@ -112,6 +112,19 @@ const deleteAlumno = async (req, res) => {
     res.sendStatus(400)
   }
 }
+const deleteAlumnos = async (req, res) => {
+  try {
+    const _ids = req.body._ids
+    console.log(_ids)
+
+    const alumnos = await Alumno.deleteMany({ _id: { $in: _ids } })
+
+    res.json({ success: `Se ha eliminado el alumno ${alumnos}` })
+  } catch (err) {
+    console.log(err)
+    res.sendStatus(400)
+  }
+}
 
 const errorPage = (req, res) => {
   res.send('<h1>404</h1><p>No se ha encontrado la página</p>')
@@ -124,5 +137,6 @@ module.exports = {
   createAlumno,
   updateAlumno,
   deleteAlumno,
+  deleteAlumnos,
   errorPage
 }

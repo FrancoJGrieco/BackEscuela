@@ -40,6 +40,7 @@ app.get('/alumnos/:id', alumnosController.fetchAlumnoByDNI)
 app.post('/alumnos', alumnosController.createAlumno)
 app.put('/alumnos/:id', alumnosController.updateAlumno)
 app.delete('/alumnos/:id', alumnosController.deleteAlumno)
+app.delete('/alumnos', alumnosController.deleteAlumnos)
 
 // Rutas materias
 app.get('/materias', materiasController.fetchMaterias)
