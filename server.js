@@ -48,6 +48,7 @@ app.get('/materias/:id', materiasController.fetchMateria)
 app.post('/materias', materiasController.createMateria)
 app.put('/materias/:id', materiasController.updateMateria)
 app.delete('/materias/:id', materiasController.deleteMateria)
+app.delete('/materias', materiasController.deleteMaterias)
 
 // Rutas cursos
 app.get('/cursos', cursosController.fetchCursos)
@@ -55,6 +56,7 @@ app.get('/cursos/:id', cursosController.fetchCurso)
 app.post('/cursos', cursosController.createCurso)
 app.put('/cursos/:id', cursosController.updateCurso)
 app.delete('/cursos/:id', cursosController.deleteCurso)
+app.delete('/cursos', cursosController.deleteCursos)
 
 // Rutas comisiones
 app.get('/comisiones', comisionesController.fetchComisiones)
@@ -62,6 +64,7 @@ app.get('/comisiones/:id', comisionesController.fetchComision)
 app.post('/comisiones', comisionesController.createComision)
 app.put('/comisiones/:id', comisionesController.updateComision)
 app.delete('/comisiones/:id', comisionesController.deleteComision)
+app.delete('/comisiones', comisionesController.deleteComisiones)
 
 // Rutas boletines
 app.get('/boletines', boletinesController.fetchBoletines)

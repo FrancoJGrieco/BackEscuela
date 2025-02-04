@@ -74,11 +74,25 @@ const deleteCurso = async (req, res) => {
     res.sendStatus(400)
   }
 }
+const deleteCursos = async (req, res) => {
+  try {
+    const _ids = req.body._ids
+    console.log(_ids)
+
+    const cursos = await Curso.deleteMany({ _id: { $in: _ids } })
+
+    res.json({ success: `Se han eliminado ${cursos}` })
+  } catch (err) {
+    console.log(err)
+    res.sendStatus(400)
+  }
+}
 
 module.exports = {
   fetchCursos,
   fetchCurso,
   createCurso,
   updateCurso,
-  deleteCurso
+  deleteCurso,
+  deleteCursos
 }

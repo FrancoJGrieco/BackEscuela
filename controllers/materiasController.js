@@ -86,10 +86,25 @@ const deleteMateria = async (req, res) => {
   }
 }
 
+const deleteMaterias = async (req, res) => {
+  try {
+    const _ids = req.body._ids
+    console.log(_ids)
+
+    const materias = await Materia.deleteMany({ _id: { $in: _ids } })
+
+    res.json({ success: `Se ha eliminado ${materias}` })
+  } catch (err) {
+    console.log(err)
+    res.sendStatus(400)
+  }
+}
+
 module.exports = {
   fetchMaterias,
   fetchMateria,
   createMateria,
   updateMateria,
-  deleteMateria
+  deleteMateria,
+  deleteMaterias
 }

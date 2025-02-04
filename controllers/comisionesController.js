@@ -31,10 +31,14 @@ const createComision = async (req, res) => {
       alumnos
     } = req.body
 
+    const materiasYear = materias.filter((materia) => materia.year === year)
+
+    console.log(materias)
+
     const comision = await Comision.create({
       numero,
       year,
-      materias,
+      materias: materiasYear,
       alumnos
     })
     await comision.populate('materias')
@@ -83,10 +87,25 @@ const deleteComision = async (req, res) => {
   }
 }
 
+const deleteComisiones = async (req, res) => {
+  try {
+    const _ids = req.body._ids
+    console.log(_ids)
+
+    const comisiones = await Comision.deleteMany({ _id: { $in: _ids } })
+
+    res.json({ success: `Se ha eliminado ${comisiones}` })
+  } catch (err) {
+    console.log(err)
+    res.sendStatus(400)
+  }
+}
+
 module.exports = {
   fetchComisiones,
   fetchComision,
   createComision,
   updateComision,
-  deleteComision
+  deleteComision,
+  deleteComisiones
 }
