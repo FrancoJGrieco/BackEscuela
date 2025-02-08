@@ -66,13 +66,6 @@ El servidor correrá en:
 ```
 http://localhost:3030
 ```
-
-## ✅ Endpoints Principales
-- **GET** `/alumnos` → Obtener lista de alumnos
-- **POST** `/alumnos` → Crear un nuevo alumno
-- **PUT** `/alumnos/:id` → Actualizar información de un alumno
-- **DELETE** `/alumnos/:id` → Eliminar un alumno
-
 ---
 
 👨‍💻 **Desarrollado por Franco Grieco**
