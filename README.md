@@ -1,7 +1,7 @@
 # 📌 Proyecto: Final Programacion III (BackEnd)
 
 ## 📖 Descripción
-BackEscuela es el módulo backend de un sistema de gestión escolar. 
+BackEscuela es el módulo backend del sistema de gestión escolar. 
 Proporciona una API para administrar:
 
 - Alumnos
