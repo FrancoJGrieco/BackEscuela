@@ -2,7 +2,21 @@ const Alumno = require('../models/alumno')
 
 const fetchAlumnos = async (req, res) => {
   try {
-    const alumnos = await Alumno.find().populate('boletines')
+    const alumnos = await Alumno.find()
+      .populate('boletines')
+      .populate({
+        path: 'boletines',
+        populate: [
+          { path: 'curso', model: 'Curso' },
+          { path: 'comision', model: 'Comision' },
+          { path: 'materias', model: 'MateriaBoletin' },
+          {
+            path: 'materias',
+            model: 'MateriaBoletin',
+            populate: { path: 'materia', model: 'Materia' }
+          }
+        ]
+      })
 
     res.json({ alumnos })
   } catch (err) {
