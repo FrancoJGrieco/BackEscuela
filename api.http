@@ -14,7 +14,7 @@ GET http://localhost:3030/alumnos
 
 ####
 
-GET http://localhost:3030/alumnos/677796326c82e588beb1af9c
+GET http://localhost:3030/alumnos/677796326c82e588b
 
 ###
 

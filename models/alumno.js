@@ -1,10 +1,11 @@
 const mongoose = require('mongoose')
 
 const alumnoSchema = new mongoose.Schema({
+  dni: String,
   nombre: String,
   apellido: String,
-  edad: Number,
-  dni: String,
+  nacimiento: String,
+  mail: String,
   boletines: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Boletin'

@@ -3,7 +3,6 @@ const Alumno = require('../models/alumno')
 const fetchAlumnos = async (req, res) => {
   try {
     const alumnos = await Alumno.find()
-      .populate('boletines')
       .populate({
         path: 'boletines',
         populate: [
@@ -29,7 +28,6 @@ const fetchAlumno = async (req, res) => {
   try {
     const id = req.params.id
     const alumno = await Alumno.findById(id)
-      .populate('boletines')
       .populate({
         path: 'boletines',
         populate: [
@@ -44,10 +42,11 @@ const fetchAlumno = async (req, res) => {
         ]
       })
 
+    if (!alumno) { return res.status(404).json({ message: 'Alumno no encontrado' }) }
     res.json({ alumno })
   } catch (err) {
-    console.log(err)
-    res.sendStatus(400)
+    console.error('Error al obtener el alumno:', err.message)
+    res.sendStatus(400).json({ message: 'Error interno del servidor' })
   }
 }
 
@@ -65,17 +64,19 @@ const fetchAlumnoByDNI = async (req, res) => {
 const createAlumno = async (req, res) => {
   try {
     const {
+      dni,
       nombre,
       apellido,
-      edad,
-      dni
+      mail,
+      nacimiento
     } = req.body
 
     const alumno = await Alumno.create({
+      dni,
       nombre,
       apellido,
-      edad,
-      dni,
+      mail,
+      nacimiento,
       boletines: []
     })
     res.json({ alumno })
@@ -90,18 +91,20 @@ const updateAlumno = async (req, res) => {
     const id = req.params.id
 
     const {
+      dni,
       nombre,
       apellido,
-      edad,
-      dni,
+      mail,
+      nacimiento,
       boletines
     } = req.body
 
     await Alumno.findByIdAndUpdate(id, {
+      dni,
       nombre,
       apellido,
-      edad,
-      dni,
+      mail,
+      nacimiento,
       boletines
     })
 

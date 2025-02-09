@@ -19,11 +19,11 @@ const ejecutarMigracionAlumnos = async () => {
     }
 
     await Alumno.insertMany([
-      { nombre: 'Carlos', apellido: 'Rivera', dni: '40015527', edad: '27' },
-      { nombre: 'Pedro', apellido: 'Casas', dni: '40015528', edad: '28' },
-      { nombre: 'Jose', apellido: 'Alas', dni: '40015529', edad: '29' },
-      { nombre: 'Juan', apellido: 'Miles', dni: '40015530', edad: '30' },
-      { nombre: 'Humberto', apellido: 'Primo', dni: '40015531', edad: '31' }
+      { nombre: 'Carlos', apellido: 'Rivera', dni: '40015527', nacimiento: '2023-12-21', mail: 'mail1@mail.com' },
+      { nombre: 'Pedro', apellido: 'Casas', dni: '40015528', nacimiento: '2023-12-21', mail: 'mail1@mail.com' },
+      { nombre: 'Jose', apellido: 'Alas', dni: '40015529', nacimiento: '2023-12-21', mail: 'mail1@mail.com' },
+      { nombre: 'Juan', apellido: 'Miles', dni: '40015530', nacimiento: '2023-12-21', mail: 'mail1@mail.com' },
+      { nombre: 'Humberto', apellido: 'Primo', dni: '40015531', nacimiento: '2023-12-21', mail: 'mail1@mail.com' }
     ])
 
     console.log('Datos iniciales de Alumnos insertados con exito')
