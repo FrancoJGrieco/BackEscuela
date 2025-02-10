@@ -83,12 +83,22 @@ const ejecutarMigracionMaterias = async () => {
     }
 
     await Materia.insertMany([
-      { nombre: 'Analisis de Datos I', descripcion: 'Materia de analisis principiante' },
-      { nombre: 'Analisis de Datos II', descripcion: 'Materia de analisis intermedio' },
-      { nombre: 'Analisis de Datos III', descripcion: 'Materia de analisis avanzado' },
-      { nombre: 'Lengua', descripcion: 'Materia de escritura' },
-      { nombre: 'Fisica I', descripcion: 'Materia de calculos' },
-      { nombre: 'Fisica II', descripcion: 'Materia de calculos' }
+      { nombre: 'Analisis de Datos I', year: '1', descripcion: 'Materia de analisis principiante' },
+      { nombre: 'Analisis de Datos II', year: '2', descripcion: 'Materia de analisis intermedio' },
+      { nombre: 'Analisis de Datos III', year: '3', descripcion: 'Materia de analisis avanzado' },
+      { nombre: 'Lengua', year: '1', descripcion: 'Materia de escritura' },
+      { nombre: 'Fisica I', year: '1', descripcion: 'Materia de calculos' },
+      { nombre: 'Fisica II', year: '2', descripcion: 'Materia de calculos' },
+      { nombre: 'Analisis de Matematico I', year: '1', descripcion: 'Materia de analisis matematico principiante' },
+      { nombre: 'Analisis de Matematico II', year: '2', descripcion: 'Materia de analisis matematico intermedio' },
+      { nombre: 'Analisis de Matematico III', year: '3', descripcion: 'Materia de analisis matematico avanzado' },
+      { nombre: 'Programacion I', year: '1', descripcion: 'Materia de programacion principiante' },
+      { nombre: 'Programacion II', year: '2', descripcion: 'Materia de programacion intermedio' },
+      { nombre: 'Programacion III', year: '3', descripcion: 'Materia de programacion avanzado' },
+      { nombre: 'Ingles I', year: '1', descripcion: 'Materia de ingles principiante' },
+      { nombre: 'Ingles II', year: '2', descripcion: 'Materia de ingles intermedio' },
+      { nombre: 'Ingles III', year: '3', descripcion: 'Materia de ingles avanzado' },
+      { nombre: 'Quimica', year: '1', descripcion: 'Materia de quimica' }
     ])
 
     console.log('Datos iniciales de Materias insertados con exito')

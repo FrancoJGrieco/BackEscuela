@@ -1,8 +1,12 @@
 const Comision = require('../models/comision')
+const Curso = require('../models/curso')
 
 const fetchComisiones = async (req, res) => {
   try {
-    const comisiones = await Comision.find().populate('materias').populate('alumnos')
+    const comisiones = await Comision.find()
+      .populate('materias')
+      .populate('alumnos')
+      .populate('curso')
 
     res.json({ comisiones })
   } catch (err) {
@@ -14,7 +18,10 @@ const fetchComisiones = async (req, res) => {
 const fetchComision = async (req, res) => {
   try {
     const id = req.params.id
-    const comision = await Comision.findById(id).populate('materias')
+    const comision = await Comision.findById(id)
+      .populate('materias')
+      .populate('alumnos')
+      .populate('curso')
     res.json({ comision })
   } catch (err) {
     console.log(err)
@@ -27,21 +34,27 @@ const createComision = async (req, res) => {
     const {
       numero,
       year,
-      materias,
+      curso,
       alumnos
     } = req.body
 
-    const materiasYear = materias.filter((materia) => materia.year === year)
+    const resCurso = await Curso.findById(curso).populate('materias')
 
-    console.log(materias)
+    const materiasYear = resCurso.materias
+      .filter((materia) => materia.year === year)
+      .map((materia) => materia._id)
 
     const comision = await Comision.create({
       numero,
       year,
+      curso,
       materias: materiasYear,
       alumnos
     })
-    await comision.populate('materias')
+    await comision
+      .populate('materias')
+      .populate('alumnos')
+      .populate('curso')
 
     res.json({ comision })
   } catch (err) {
@@ -57,15 +70,22 @@ const updateComision = async (req, res) => {
     const {
       numero,
       year,
-      materias,
+      curso,
       alumnos
     } = req.body
 
-    console.log(numero, year, materias, alumnos)
+    const resCurso = await Curso.findById(curso).populate('materias')
 
-    await Comision.findByIdAndUpdate(id, { numero, year, materias, alumnos })
+    const materiasYear = resCurso.materias
+      .filter((materia) => materia.year === year)
+      .map((materia) => materia._id)
 
-    const comision = await Comision.findById(id).populate('materias').populate('alumnos')
+    await Comision.findByIdAndUpdate(id, { numero, year, curso, materias: materiasYear, alumnos })
+
+    const comision = await Comision.findById(id)
+      .populate('materias')
+      .populate('alumnos')
+      .populate('curso')
 
     res.json({ comision })
   } catch (err) {
