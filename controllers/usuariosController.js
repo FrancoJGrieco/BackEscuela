@@ -6,25 +6,46 @@ async function signup (req, res) {
   try {
     const { user, password } = req.body
 
+    if (!user || !password) {
+      return res.status(400).json({ error: 'Usuario y contraseña son obligatorios' })
+    }
+
+    if (password.length < 6) {
+      return res.status(400).json({ error: 'La contraseña debe tener al menos 6 caracteres' })
+    }
+
+    const usuarioExistente = await Usuario.findOne({ user })
+    if (usuarioExistente) {
+      return res.status(409).json({ error: 'El usuario ya existe' })
+    }
+
     const hashedPassword = bcrypt.hashSync(password, 8)
 
     await Usuario.create({ user, password: hashedPassword })
 
     res.sendStatus(201)
   } catch (err) {
-    console.log(err)
-    res.sendStatus(400)
+    console.error('Error en signup:', err)
+    res.status(500).json({ error: 'Error interno del servidor' })
   }
 }
 async function login (req, res) {
   try {
     const { user, password } = req.body
 
-    const usuario = await Usuario.findOne({ user })
-    if (!usuario) return res.sendStatus(401)
+    if (!user || !password) {
+      return res.status(400).json({ error: 'Usuario y contraseña son obligatorios' })
+    }
 
-    const passwordMatch = bcrypt.compareSync(password, usuario.password)
-    if (!passwordMatch) return res.sendStatus(401)
+    const usuario = await Usuario.findOne({ user })
+    if (!usuario) {
+      return res.status(401).json({ error: 'Credenciales inválidas' })
+    }
+
+    const passwordMatch = await bcrypt.compare(password, usuario.password)
+    if (!passwordMatch) {
+      return res.status(401).json({ error: 'Credenciales inválidas' })
+    }
 
     const exp = Date.now() + 1000 * 60 * 60 * 24 * 30
     const token = jwt.sign({ sub: usuario._id, exp }, process.env.SECRET)
@@ -36,28 +57,34 @@ async function login (req, res) {
       secure: process.env.NODE_ENV === 'production'
     })
 
-    res.sendStatus(200)
+    res.status(200).json({ success: 'Login exitoso', token })
   } catch (err) {
-    console.log(err)
-    return res.sendStatus(400)
+    console.error('Error en login:', err)
+    res.status(500).json({ error: 'Error interno del servidor' })
   }
 }
 function logout (req, res) {
   try {
     res.clearCookie('Authorization')
-    res.sendStatus(200)
+    res.status(200).json({ success: 'Logout exitoso' })
   } catch (err) {
-    console.log(err)
-    return res.sendStatus(400)
+    console.error('Error en logout:', err)
+    res.status(500).json({ error: 'Error interno del servidor' })
   }
 }
 
 function checkAuth (req, res) {
   try {
-    res.sendStatus(200)
+    if (!req.cookies.Authorization) {
+      return res.status(401).json({ error: 'No autenticado' })
+    }
+    const token = req.cookies.Authorization
+    const decoded = jwt.verify(token, process.env.SECRET)
+
+    res.status(200).json({ success: 'Autenticado', userId: decoded.sub })
   } catch (err) {
-    console.log(err)
-    return res.sendStatus(400)
+    console.error('Error en checkAuth:', err)
+    res.status(401).json({ error: 'Token inválido o expirado' })
   }
 }
 
