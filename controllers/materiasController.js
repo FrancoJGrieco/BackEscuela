@@ -7,15 +7,19 @@ const fetchMaterias = async (req, res) => {
 
     res.json({ materias })
   } catch (err) {
-    console.log(err)
-    res.sendStatus(400)
+    console.log('(fetchMaterias) Error al obtener materias:', err)
+    res.status(500).json({ error: 'Error interno del servidor' })
   }
 }
 
 const fetchMateria = async (req, res) => {
   try {
     const id = req.params.id
+
     const materia = await Materia.findById(id)
+
+    if (!materia) { return res.status(404).json({ error: 'Alumno no encontrado' }) }
+
     res.json({ materia })
   } catch (err) {
     console.log(err)
