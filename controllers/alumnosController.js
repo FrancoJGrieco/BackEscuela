@@ -25,6 +25,7 @@ const fetchAlumnos = async (req, res) => {
 const fetchAlumno = async (req, res) => {
   try {
     const id = req.params.id
+
     const alumno = await Alumno.findById(id)
       .populate({
         path: 'boletines',
