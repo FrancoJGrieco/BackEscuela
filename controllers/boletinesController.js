@@ -80,8 +80,6 @@ const createBoletin = async (req, res) => {
       materias
     })
 
-    // await boletin.populate('curso').populate('comision').populate('materias')
-
     res.json({ boletin })
   } catch (err) {
     console.log(err)

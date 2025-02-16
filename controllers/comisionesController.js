@@ -38,23 +38,23 @@ const createComision = async (req, res) => {
       alumnos
     } = req.body
 
+    console.log(numero, year, curso, alumnos)
+
     const resCurso = await Curso.findById(curso).populate('materias')
 
     const materiasYear = resCurso.materias
       .filter((materia) => materia.year === year)
       .map((materia) => materia._id)
 
-    const comision = await Comision.create({
+    const resComision = await Comision.create({
       numero,
       year,
       curso,
       materias: materiasYear,
       alumnos
     })
-    await comision
-      .populate('materias')
-      .populate('alumnos')
-      .populate('curso')
+
+    const comision = await Comision.findById(resComision._id).populate('materias').populate('curso')
 
     res.json({ comision })
   } catch (err) {
