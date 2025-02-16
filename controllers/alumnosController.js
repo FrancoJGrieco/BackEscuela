@@ -40,33 +40,12 @@ const fetchAlumno = async (req, res) => {
         ]
       })
 
-    if (!alumno) { return res.status(404).json({ message: 'Alumno no encontrado' }) }
+    if (!alumno) { return res.status(404).json({ error: 'Alumno no encontrado' }) }
 
     res.json({ alumno })
   } catch (err) {
-    console.error('Error al obtener el alumno:', err.message)
+    console.error('(fetchAlumno) Error al obtener el alumno:', err)
     res.status(500).json({ message: 'Error interno del servidor' })
-  }
-}
-
-const fetchAlumnoByDNI = async (req, res) => {
-  try {
-    const dni = req.params.dni
-
-    if (!dni) {
-      res.status(400).json({ error: 'Se requiere un DNI' })
-    }
-
-    const alumno = await Alumno.findOne({ dni })
-
-    if (!alumno) {
-      return res.status(404).json({ error: 'No se ha encontrado el alumno' })
-    }
-
-    res.json({ alumno })
-  } catch (err) {
-    console.log('(fetchAlumnoByDNI) Error al buscar alumno:', err)
-    res.status(500).json({ error: 'Error interno del servidor' })
   }
 }
 

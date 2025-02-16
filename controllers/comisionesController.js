@@ -24,7 +24,7 @@ const fetchComision = async (req, res) => {
       .populate('alumnos')
       .populate('curso')
 
-    if (!comision) { return res.status(404).json({ message: 'Comision no encontrada' }) }
+    if (!comision) { return res.status(404).json({ error: 'Comision no encontrada' }) }
 
     res.json({ comision })
   } catch (err) {
@@ -41,6 +41,10 @@ const createComision = async (req, res) => {
       curso,
       alumnos
     } = req.body
+
+    if (!numero || !year || !curso) {
+      return res.status(400).json({ error: 'Falta un campo' })
+    }
 
     const resCurso = await Curso.findById(curso).populate('materias')
 
