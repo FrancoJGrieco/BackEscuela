@@ -9,7 +9,7 @@ const materiasController = require('./controllers/materiasController.js')
 const cursosController = require('./controllers/cursosController.js')
 const comisionesController = require('./controllers/comisionesController.js')
 const boletinesController = require('./controllers/boletinesController.js')
-const materiasboletinController = require('./controllers/materiasboletinController.js')
+const materiasboletinController = require('./controllers/materiasBoletinController.js')
 
 const requireAuth = require('./middleware/requireAuth.js')
 
