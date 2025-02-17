@@ -45,6 +45,11 @@ const createComision = async (req, res) => {
     if (!numero || !year || !curso) {
       return res.status(400).json({ error: 'Falta un campo' })
     }
+    const comisionExistente = await Comision.findOne({ numero })
+
+    if (comisionExistente) {
+      res.status(409).json({ error: 'Ya existe una comision con ese numero' })
+    }
 
     const resCurso = await Curso.findById(curso).populate('materias')
 
@@ -63,12 +68,6 @@ const createComision = async (req, res) => {
       materias: materiasYear,
       alumnos
     })
-
-    const comisionExistente = await Comision.findOne({ numero })
-
-    if (comisionExistente) {
-      res.status(409).json({ error: 'Ya existe una comision con ese numero' })
-    }
 
     const comision = await Comision.findById(resComision._id)
       .populate('materias')

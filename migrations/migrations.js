@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const bcrypt = require('bcryptjs')
 
 require('dotenv').config()
 
@@ -6,6 +7,7 @@ const Alumno = require('../models/alumno')
 const Curso = require('../models/curso')
 const Comision = require('../models/comision')
 const Materia = require('../models/materia')
+const Usuario = require('../models/usuario')
 
 mongoose.connect('mongodb://localhost:27017/Escuela').then(() => console.log('Conectado a MongoDB'))
   .catch(err => console.error('Error conectando a MongoDB', err))
@@ -107,11 +109,33 @@ const ejecutarMigracionMaterias = async () => {
   }
 }
 
+const ejecutarMigracionUsuarios = async () => {
+  try {
+    const usuario = await Usuario.findOne({ user: 'admin@mail.com' })
+    if (usuario) {
+      console.log('Ya se ha hecho la migracion de usuarios')
+      return
+    }
+
+    await Usuario.insertMany([
+      {
+        user: 'admin@mail.com',
+        password: bcrypt.hashSync('admin123', 8)
+      }
+    ])
+
+    console.log('Datos iniciales de Usuarios insertados con éxito')
+  } catch (err) {
+    console.error('Error insertando los datos de usuario: ', err)
+  }
+}
+
 Promise.all([
   ejecutarMigracionComisiones(),
   ejecutarMigracionCursos(),
   ejecutarMigracionMaterias(),
-  ejecutarMigracionAlumnos()
+  ejecutarMigracionAlumnos(),
+  ejecutarMigracionUsuarios()
 ]).then(() => mongoose.connection.close())
   .catch((err) => {
     console.log('No se ha podido hacer la migracion: ', err)
