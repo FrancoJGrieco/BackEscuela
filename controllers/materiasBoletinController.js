@@ -39,9 +39,12 @@ const createMateriaBoletin = async (req, res) => {
     }
 
     const materiaBoletin = await MateriaBoletin.create({
+      boletin: null,
       materia,
       notas
     })
+
+    console.log(materiaBoletin)
 
     await materiaBoletin.populate('materia')
 
@@ -57,6 +60,7 @@ const updateMateriaBoletin = async (req, res) => {
     const id = req.params.id
 
     const {
+      boletin,
       materia,
       notas
     } = req.body
@@ -67,6 +71,7 @@ const updateMateriaBoletin = async (req, res) => {
     }
 
     await MateriaBoletin.findByIdAndUpdate(id, {
+      boletin,
       materia,
       notas
     })

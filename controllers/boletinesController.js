@@ -94,13 +94,23 @@ const createBoletin = async (req, res) => {
       res.status(409).json({ error: 'Ya existe un boletin con esa comision para ese alumno' })
     }
 
-    const boletin = await Boletin.create({
+    const resBoletin = await Boletin.create({
       curso,
       comision,
       year,
       alumno,
       materias
     })
+
+    const boletin = await Boletin.findById(resBoletin._id)
+      .populate('materias')
+      .populate('alumno')
+      .populate('comision')
+      .populate('curso')
+      .populate({
+        path: 'materias',
+        populate: { path: 'materia' }
+      })
 
     res.json({ boletin })
   } catch (err) {
@@ -137,8 +147,14 @@ const updateBoletin = async (req, res) => {
     const boletin = await Boletin.findById(id)
       .populate('materias')
       .populate('alumno')
-      .populate({ path: 'materias.materia' })
+      .populate('comision')
+      .populate('curso')
+      .populate({
+        path: 'materias',
+        populate: { path: 'materia' }
+      })
 
+    console.log(boletin)
     res.json({ boletin })
   } catch (err) {
     console.log('(updateBoletin) Error al actualizar el boletin:', err)

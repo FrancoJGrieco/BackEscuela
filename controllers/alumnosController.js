@@ -1,4 +1,6 @@
 const Alumno = require('../models/alumno')
+const Boletin = require('../models/boletin')
+const Comision = require('../models/comision')
 
 const fetchAlumnos = async (req, res) => {
   try {
@@ -166,11 +168,22 @@ const deleteAlumnos = async (req, res) => {
       return res.status(400).json({ error: 'Debe proporcionar un array de IDs valido' })
     }
 
+    const alumnosBoletines = await Alumno.find({ _id: { $in: _ids } })
+
     const alumnos = await Alumno.deleteMany({ _id: { $in: _ids } })
 
     if (alumnos.deletedCount === 0) {
-      res.status(404).json({ error: 'No se encontraron alumnos para eliminar' })
+      return res.status(404).json({ error: 'No se encontraron alumnos para eliminar' })
     }
+
+    await Comision.updateMany(
+      { alumnos: { $in: _ids } },
+      { $pull: { alumnos: { $in: _ids } } }
+    )
+
+    const boletinesIds = alumnosBoletines.flatMap(alumno => alumno.boletines)
+
+    await Boletin.deleteMany({ _id: { $in: boletinesIds } })
 
     res.json({ success: `Se han eliminado ${alumnos.deletedCount} alumnos` })
   } catch (err) {
