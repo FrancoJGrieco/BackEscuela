@@ -19,7 +19,7 @@ const fetchMateria = async (req, res) => {
     const materia = await Materia.findById(id)
 
     if (!materia) {
-      return res.status(404).json({ success: false, message: 'Alumno no encontrado' })
+      return res.status(404).json({ success: false, message: 'Materia no encontrada' })
     }
 
     res.json({ success: true, materia })
@@ -44,7 +44,7 @@ const createMateria = async (req, res) => {
     const materiaExistente = await Materia.findOne({ nombre })
 
     if (materiaExistente) {
-      return res.status(409).json({ success: false, message: 'Ya existe un alumno con ese DNI' })
+      return res.status(409).json({ success: false, message: 'Ya existe una materia con ese nombre' })
     }
 
     const materia = await Materia.create({
@@ -55,7 +55,7 @@ const createMateria = async (req, res) => {
 
     res.json({ success: true, materia })
   } catch (err) {
-    console.log('(createMateria) Error al crear alumno', err)
+    console.log('(createMateria) Error al crear materia', err)
     if (!res.headersSent) res.status(500).json({ error: 'Error interno del servidor' })
   }
 }
@@ -133,7 +133,7 @@ const deleteMaterias = async (req, res) => {
 
     res.json({ success: true, message: `Se ha eliminado ${materias}` })
   } catch (err) {
-    console.log('(deleteMaterias) Error al eliminar las materis', err)
+    console.log('(deleteMaterias) Error al eliminar las materias', err)
     if (!res.headersSent) res.status(500).json({ error: 'Error interno del servidor' })
   }
 }
