@@ -94,6 +94,7 @@ const updateComision = async (req, res) => {
     } = req.body
 
     const comisionExistente = await Comision.findById(id)
+    console.log(numero, year, curso, alumnos)
     if (!comisionExistente) {
       return res.status(404).json({ success: false, message: 'No se ha encontrado la comision' })
     }

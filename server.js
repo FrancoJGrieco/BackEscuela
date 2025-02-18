@@ -12,6 +12,7 @@ const boletinesController = require('./controllers/boletinesController.js')
 const materiasboletinController = require('./controllers/materiasBoletinController.js')
 
 const requireAuth = require('./middleware/requireAuth.js')
+const { correrMigracion } = require('./migrations/migrations.js')
 
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
@@ -19,6 +20,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 const app = express()
 connectToDb()
+correrMigracion()
 
 app.use(express.json())
 app.use(cookieParser())

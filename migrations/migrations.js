@@ -130,13 +130,15 @@ const ejecutarMigracionUsuarios = async () => {
   }
 }
 
-Promise.all([
-  ejecutarMigracionComisiones(),
-  ejecutarMigracionCursos(),
-  ejecutarMigracionMaterias(),
-  ejecutarMigracionAlumnos(),
-  ejecutarMigracionUsuarios()
-]).then(() => mongoose.connection.close())
-  .catch((err) => {
-    console.log('No se ha podido hacer la migracion: ', err)
-  })
+module.exports.correrMigracion = () => {
+  Promise.all([
+    ejecutarMigracionComisiones(),
+    ejecutarMigracionCursos(),
+    ejecutarMigracionMaterias(),
+    ejecutarMigracionAlumnos(),
+    ejecutarMigracionUsuarios()
+  ]).then(() => mongoose.connection.close())
+    .catch((err) => {
+      console.log('No se ha podido hacer la migracion: ', err)
+    })
+}
