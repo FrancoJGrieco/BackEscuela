@@ -8,7 +8,7 @@ const fetchComisiones = async (req, res) => {
       .populate('alumnos')
       .populate('curso')
 
-    res.json({ comisiones })
+    res.json({ success: true, comisiones })
   } catch (err) {
     console.log('(fetchComisiones) Error al obtener comisiones:', err)
     if (!res.headersSent) res.status(500).json({ error: 'Error interno del servidor' })
@@ -24,9 +24,11 @@ const fetchComision = async (req, res) => {
       .populate('alumnos')
       .populate('curso')
 
-    if (!comision) { return res.status(404).json({ error: 'Comision no encontrada' }) }
+    if (!comision) {
+      return res.status(404).json({ success: false, message: 'Comision no encontrada' })
+    }
 
-    res.json({ comision })
+    res.json({ success: true, comision })
   } catch (err) {
     console.log('(fetchComision) Error al obtener comisiones:', err)
     if (!res.headersSent) res.status(500).json({ error: 'Error interno del servidor' })
@@ -43,18 +45,18 @@ const createComision = async (req, res) => {
     } = req.body
 
     if (!numero || !year || !curso) {
-      return res.status(400).json({ error: 'Falta un campo' })
+      return res.status(400).json({ success: false, message: 'Falta un campo' })
     }
     const comisionExistente = await Comision.findOne({ numero })
 
     if (comisionExistente) {
-      res.status(409).json({ error: 'Ya existe una comision con ese numero' })
+      return res.status(409).json({ success: false, message: 'Ya existe una comision con ese numero' })
     }
 
     const resCurso = await Curso.findById(curso).populate('materias')
 
     if (!resCurso) {
-      res.status(404).json({ error: 'No se ha encontrado el curso' })
+      return res.status(404).json({ success: false, message: 'No se ha encontrado el curso' })
     }
 
     const materiasYear = resCurso.materias
@@ -73,7 +75,7 @@ const createComision = async (req, res) => {
       .populate('materias')
       .populate('curso')
 
-    res.json({ comision })
+    res.json({ success: true, comision })
   } catch (err) {
     console.log('(createComision) Error al crear comision', err)
     if (!res.headersSent) res.status(500).json({ error: 'Error interno del servidor' })
@@ -93,13 +95,13 @@ const updateComision = async (req, res) => {
 
     const comisionExistente = await Comision.findById(id)
     if (!comisionExistente) {
-      return res.status(404).json({ error: 'No se ha encontrado la comision' })
+      return res.status(404).json({ success: false, message: 'No se ha encontrado la comision' })
     }
 
     const resCurso = await Curso.findById(curso).populate('materias')
 
     if (!resCurso) {
-      res.status(404).json({ error: 'No se ha encontrado el curso' })
+      return res.status(404).json({ success: false, message: 'No se ha encontrado el curso' })
     }
 
     const materiasYear = resCurso.materias
@@ -113,7 +115,7 @@ const updateComision = async (req, res) => {
       .populate('alumnos')
       .populate('curso')
 
-    res.json({ comision })
+    res.json({ success: true, comision })
   } catch (err) {
     console.log('(updateComision) Error al actualizar la comision:', err)
     if (!res.headersSent) res.status(500).json({ error: 'Error interno del servidor' })
@@ -127,10 +129,10 @@ const deleteComision = async (req, res) => {
     const comision = await Comision.findByIdAndDelete(id)
 
     if (!comision) {
-      return res.status(404).json({ error: 'No se ha encontrado la comision' })
+      return res.status(404).json({ success: false, message: 'No se ha encontrado la comision' })
     }
 
-    res.json({ success: `Se ha eliminado la comision ${comision.numero}` })
+    res.json({ success: true, message: `Se ha eliminado la comision ${comision.numero}` })
   } catch (err) {
     console.log('(deleteComision) Error al eliminar la comision', err)
     if (!res.headersSent) res.status(500).json({ error: 'Error interno del servidor' })
@@ -142,16 +144,16 @@ const deleteComisiones = async (req, res) => {
     const _ids = req.body._ids
 
     if (!Array.isArray(_ids) || _ids.length === 0) {
-      return res.status(400).json({ error: 'Debe proporcionar un array de IDs valido' })
+      return res.status(400).json({ success: false, message: 'Debe proporcionar un array de IDs valido' })
     }
 
     const comisiones = await Comision.deleteMany({ _id: { $in: _ids } })
 
     if (comisiones.deletedCount === 0) {
-      res.status(404).json({ error: 'No se encontraron comisiones para eliminar' })
+      return res.status(404).json({ success: false, message: 'No se encontraron comisiones para eliminar' })
     }
 
-    res.json({ success: `Se han eliminado ${comisiones.deletedCount} comisiones` })
+    res.json({ success: true, message: `Se han eliminado ${comisiones.deletedCount} comisiones` })
   } catch (err) {
     console.log('(deleteComisiones) Error al eliminar las comisiones', err)
     if (!res.headersSent) res.status(500).json({ error: 'Error interno del servidor' })

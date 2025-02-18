@@ -7,19 +7,16 @@ async function signup (req, res) {
     const { user, password } = req.body
 
     if (!user || !password) {
-      res.status(400).json({ error: 'Usuario y contraseña son obligatorios' })
-      return
+      return res.status(400).json({ success: false, message: 'Usuario y contraseña son obligatorios' })
     }
 
     if (password.length < 6) {
-      res.status(400).json({ error: 'La contraseña debe tener al menos 6 caracteres' })
-      return
+      return res.status(400).json({ success: false, message: 'La contraseña debe tener al menos 6 caracteres' })
     }
 
     const usuarioExistente = await Usuario.findOne({ user })
     if (usuarioExistente) {
-      res.status(409).json({ error: 'El usuario ya existe' })
-      return
+      return res.status(409).json({ success: false, message: 'El usuario ya existe' })
     }
 
     const hashedPassword = bcrypt.hashSync(password, 8)
@@ -37,20 +34,17 @@ async function login (req, res) {
     const { user, password } = req.body
 
     if (!user || !password) {
-      res.status(400).json({ error: 'Usuario y contraseña son obligatorios' })
-      return
+      return res.status(400).json({ success: false, message: 'Usuario y contraseña son obligatorios' })
     }
 
     const usuario = await Usuario.findOne({ user })
     if (!usuario) {
-      res.status(401).json({ error: 'Credenciales inválidas' })
-      return
+      return res.status(401).json({ success: false, message: 'Credenciales inválidas' })
     }
 
     const passwordMatch = await bcrypt.compare(password, usuario.password)
     if (!passwordMatch) {
-      res.status(401).json({ error: 'Credenciales inválidas' })
-      return
+      return res.status(401).json({ success: false, message: 'Credenciales inválidas' })
     }
 
     const exp = Date.now() + 1000 * 60 * 60 * 24 * 30
@@ -82,8 +76,7 @@ function logout (req, res) {
 function checkAuth (req, res) {
   try {
     if (!req.cookies.Authorization) {
-      res.status(401).json({ error: 'No autenticado' })
-      return
+      return res.status(401).json({ success: false, message: 'No autenticado' })
     }
     const token = req.cookies.Authorization
     const decoded = jwt.verify(token, process.env.SECRET)

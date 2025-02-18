@@ -14,7 +14,7 @@ const fetchBoletines = async (req, res) => {
         }
       })
 
-    res.json({ boletines })
+    res.json({ success: true, boletines })
   } catch (err) {
     console.log('(fetchBoletines) Error al obtener alumnos:', err)
     if (!res.headersSent) res.status(500).json({ error: 'Error interno del servidor' })
@@ -38,11 +38,10 @@ const fetchBoletin = async (req, res) => {
       })
 
     if (!boletin) {
-      res.status(404).json({ error: 'Boletin no encontrado' })
-      return
+      return res.status(404).json({ success: false, message: 'Boletin no encontrado' })
     }
 
-    res.json({ boletin })
+    res.json({ success: true, boletin })
   } catch (err) {
     console.error('(fetchBoletin) Error al obtener el boletin:', err)
     if (!res.headersSent) res.status(500).json({ message: 'Error interno del servidor' })
@@ -53,8 +52,7 @@ const fetchBoletinAlumno = async (req, res) => {
     const id = req.params.id
 
     if (!id) {
-      res.status(400).json({ error: 'Se requiere un ID' })
-      return
+      return res.status(400).json({ success: false, message: 'Se requiere un ID' })
     }
 
     const boletin = await Boletin.findOne({ alumno: id })
@@ -68,11 +66,10 @@ const fetchBoletinAlumno = async (req, res) => {
       })
 
     if (!boletin) {
-      res.status(404).json({ error: 'No se ha encontrado el boletin' })
-      return
+      return res.status(404).json({ success: false, message: 'No se ha encontrado el boletin' })
     }
 
-    res.json({ boletin })
+    res.json({ success: true, boletin })
   } catch (err) {
     console.log('(fetchBoletinAlumno) Error al buscar boletin:', err)
     if (!res.headersSent) res.status(500).json({ error: 'Error interno del servidor' })
@@ -90,15 +87,13 @@ const createBoletin = async (req, res) => {
     } = req.body
 
     if (!curso || !comision || !year || !alumno || !materias) {
-      res.status(400).json({ error: 'Falta un campo' })
-      return
+      return res.status(400).json({ success: false, message: 'Falta un campo' })
     }
 
     const boletinExistente = await Boletin.findOne({ alumno, comision })
 
     if (boletinExistente) {
-      res.status(409).json({ error: 'Ya existe un boletin con esa comision para ese alumno' })
-      return
+      return res.status(409).json({ success: false, message: 'Ya existe un boletin con esa comision para ese alumno' })
     }
 
     const resBoletin = await Boletin.create({
@@ -119,7 +114,7 @@ const createBoletin = async (req, res) => {
         populate: { path: 'materia' }
       })
 
-    res.json({ boletin })
+    res.json({ success: true, boletin })
   } catch (err) {
     console.log('(createBoletin) Error al crear boletin', err)
     if (!res.headersSent) res.status(500).json({ error: 'Error interno del servidor' })
@@ -140,8 +135,7 @@ const updateBoletin = async (req, res) => {
 
     const boletinExistente = await Boletin.findById(id)
     if (!boletinExistente) {
-      res.status(404).json({ error: 'No se ha encontrado el boletin' })
-      return
+      return res.status(404).json({ success: false, message: 'No se ha encontrado el boletin' })
     }
 
     await Boletin.findByIdAndUpdate(id, {
@@ -162,8 +156,7 @@ const updateBoletin = async (req, res) => {
         populate: { path: 'materia' }
       })
 
-    console.log(boletin)
-    res.json({ boletin })
+    res.json({ success: true, boletin })
   } catch (err) {
     console.log('(updateBoletin) Error al actualizar el boletin:', err)
     if (!res.headersSent) res.status(500).json({ error: 'Error interno del servidor' })
@@ -177,11 +170,10 @@ const deleteBoletin = async (req, res) => {
     const boletin = await Boletin.findByIdAndDelete(id)
 
     if (!boletin) {
-      res.status(404).json({ error: 'No se ha encontrado el boletin' })
-      return
+      return res.status(404).json({ success: false, message: 'No se ha encontrado el boletin' })
     }
 
-    res.json({ success: `Se ha eliminado el boletin ${boletin._id}` })
+    res.json({ success: true, message: `Se ha eliminado el boletin ${boletin._id}` })
   } catch (err) {
     console.log('(deleteBoletin) Error al eliminar el boletin', err)
     if (!res.headersSent) res.status(500).json({ error: 'Error interno del servidor' })

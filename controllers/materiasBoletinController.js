@@ -5,7 +5,7 @@ const fetchMateriasBoletin = async (req, res) => {
     const materiasBoletin = await MateriaBoletin.find()
       .populate('materia')
 
-    res.json({ materiasBoletin })
+    res.json({ success: true, materiasBoletin })
   } catch (err) {
     console.log('(fetchMateriasBoletin) Error al obtener materias del boletin:', err)
     if (!res.headersSent) res.status(500).json({ error: 'Error interno del servidor' })
@@ -19,11 +19,10 @@ const fetchMateriaBoletin = async (req, res) => {
     const materiaBoletin = await MateriaBoletin.findById(id).populate('materia')
 
     if (!materiaBoletin) {
-      res.status(404).json({ error: 'Materia del boletin no encontrado' })
-      return
+      return res.status(404).json({ success: false, message: 'Materia del boletin no encontrado' })
     }
 
-    res.json({ materiaBoletin })
+    res.json({ success: true, materiaBoletin })
   } catch (err) {
     console.error('(fetchMateriaBoletin) Error al obtener la materia del boletin:', err)
     if (!res.headersSent) res.status(500).json({ message: 'Error interno del servidor' })
@@ -38,8 +37,7 @@ const createMateriaBoletin = async (req, res) => {
     } = req.body
 
     if (!materia) {
-      res.status(400).json({ error: 'Falta un campo' })
-      return
+      return res.status(400).json({ success: false, message: 'Falta un campo' })
     }
 
     const materiaBoletin = await MateriaBoletin.create({
@@ -52,7 +50,7 @@ const createMateriaBoletin = async (req, res) => {
 
     await materiaBoletin.populate('materia')
 
-    res.json({ materiaBoletin })
+    res.json({ success: true, materiaBoletin })
   } catch (err) {
     console.log('(createMateriaBoletin) Error al crear una materia en el boletin', err)
     if (!res.headersSent) res.status(500).json({ error: 'Error interno del servidor' })
@@ -71,8 +69,7 @@ const updateMateriaBoletin = async (req, res) => {
 
     const materiaBoletinExistente = await MateriaBoletin.findById(id)
     if (!materiaBoletinExistente) {
-      res.status(404).json({ error: 'No se ha encontrado la materia del boletin' })
-      return
+      return res.status(404).json({ success: false, message: 'No se ha encontrado la materia del boletin' })
     }
 
     await MateriaBoletin.findByIdAndUpdate(id, {
@@ -83,7 +80,7 @@ const updateMateriaBoletin = async (req, res) => {
 
     const materiaBoletin = await MateriaBoletin.findById(id).populate('materia')
 
-    res.json({ materiaBoletin })
+    res.json({ success: true, materiaBoletin })
   } catch (err) {
     console.log('(updateMateriaBoletin) Error al actualizar la materia del boletin:', err)
     if (!res.headersSent) res.status(500).json({ error: 'Error interno del servidor' })
@@ -97,11 +94,10 @@ const deleteMateriaBoletin = async (req, res) => {
     const materiaBoletin = await MateriaBoletin.findByIdAndDelete(id)
 
     if (!materiaBoletin) {
-      res.status(404).json({ error: 'No se ha encontrado la materia del boletin' })
-      return
+      return res.status(404).json({ success: false, message: 'No se ha encontrado la materia del boletin' })
     }
 
-    res.json({ success: `Se ha eliminado la materia del boletin ${materiaBoletin._id}` })
+    res.json({ success: true, message: `Se ha eliminado la materia del boletin ${materiaBoletin._id}` })
   } catch (err) {
     console.log('(deleteMateriaBoletin) Error al eliminar la materia', err)
     if (!res.headersSent) res.status(500).json({ error: 'Error interno del servidor' })
