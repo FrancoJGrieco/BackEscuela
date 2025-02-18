@@ -8,7 +8,7 @@ const fetchMateriasBoletin = async (req, res) => {
     res.json({ materiasBoletin })
   } catch (err) {
     console.log('(fetchMateriasBoletin) Error al obtener materias del boletin:', err)
-    res.status(500).json({ error: 'Error interno del servidor' })
+    if (!res.headersSent) res.status(500).json({ error: 'Error interno del servidor' })
   }
 }
 
@@ -18,12 +18,15 @@ const fetchMateriaBoletin = async (req, res) => {
 
     const materiaBoletin = await MateriaBoletin.findById(id).populate('materia')
 
-    if (!materiaBoletin) { return res.status(404).json({ error: 'Materia del boletin no encontrado' }) }
+    if (!materiaBoletin) {
+      res.status(404).json({ error: 'Materia del boletin no encontrado' })
+      return
+    }
 
     res.json({ materiaBoletin })
   } catch (err) {
     console.error('(fetchMateriaBoletin) Error al obtener la materia del boletin:', err)
-    res.status(500).json({ message: 'Error interno del servidor' })
+    if (!res.headersSent) res.status(500).json({ message: 'Error interno del servidor' })
   }
 }
 
@@ -35,7 +38,8 @@ const createMateriaBoletin = async (req, res) => {
     } = req.body
 
     if (!materia) {
-      return res.status(400).json({ error: 'Falta un campo' })
+      res.status(400).json({ error: 'Falta un campo' })
+      return
     }
 
     const materiaBoletin = await MateriaBoletin.create({
@@ -51,7 +55,7 @@ const createMateriaBoletin = async (req, res) => {
     res.json({ materiaBoletin })
   } catch (err) {
     console.log('(createMateriaBoletin) Error al crear una materia en el boletin', err)
-    res.status(500).json({ error: 'Error interno del servidor' })
+    if (!res.headersSent) res.status(500).json({ error: 'Error interno del servidor' })
   }
 }
 
@@ -67,7 +71,8 @@ const updateMateriaBoletin = async (req, res) => {
 
     const materiaBoletinExistente = await MateriaBoletin.findById(id)
     if (!materiaBoletinExistente) {
-      return res.status(404).json({ error: 'No se ha encontrado la materia del boletin' })
+      res.status(404).json({ error: 'No se ha encontrado la materia del boletin' })
+      return
     }
 
     await MateriaBoletin.findByIdAndUpdate(id, {
@@ -81,7 +86,7 @@ const updateMateriaBoletin = async (req, res) => {
     res.json({ materiaBoletin })
   } catch (err) {
     console.log('(updateMateriaBoletin) Error al actualizar la materia del boletin:', err)
-    res.status(500).json({ error: 'Error interno del servidor' })
+    if (!res.headersSent) res.status(500).json({ error: 'Error interno del servidor' })
   }
 }
 
@@ -92,13 +97,14 @@ const deleteMateriaBoletin = async (req, res) => {
     const materiaBoletin = await MateriaBoletin.findByIdAndDelete(id)
 
     if (!materiaBoletin) {
-      return res.status(404).json({ error: 'No se ha encontrado la materia del boletin' })
+      res.status(404).json({ error: 'No se ha encontrado la materia del boletin' })
+      return
     }
 
     res.json({ success: `Se ha eliminado la materia del boletin ${materiaBoletin._id}` })
   } catch (err) {
     console.log('(deleteMateriaBoletin) Error al eliminar la materia', err)
-    res.status(500).json({ error: 'Error interno del servidor' })
+    if (!res.headersSent) res.status(500).json({ error: 'Error interno del servidor' })
   }
 }
 

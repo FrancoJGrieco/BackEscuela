@@ -17,7 +17,7 @@ const fetchBoletines = async (req, res) => {
     res.json({ boletines })
   } catch (err) {
     console.log('(fetchBoletines) Error al obtener alumnos:', err)
-    res.status(500).json({ error: 'Error interno del servidor' })
+    if (!res.headersSent) res.status(500).json({ error: 'Error interno del servidor' })
   }
 }
 
@@ -37,12 +37,15 @@ const fetchBoletin = async (req, res) => {
         }
       })
 
-    if (!boletin) { return res.status(404).json({ error: 'Boletin no encontrado' }) }
+    if (!boletin) {
+      res.status(404).json({ error: 'Boletin no encontrado' })
+      return
+    }
 
     res.json({ boletin })
   } catch (err) {
     console.error('(fetchBoletin) Error al obtener el boletin:', err)
-    res.status(500).json({ message: 'Error interno del servidor' })
+    if (!res.headersSent) res.status(500).json({ message: 'Error interno del servidor' })
   }
 }
 const fetchBoletinAlumno = async (req, res) => {
@@ -51,6 +54,7 @@ const fetchBoletinAlumno = async (req, res) => {
 
     if (!id) {
       res.status(400).json({ error: 'Se requiere un ID' })
+      return
     }
 
     const boletin = await Boletin.findOne({ alumno: id })
@@ -64,13 +68,14 @@ const fetchBoletinAlumno = async (req, res) => {
       })
 
     if (!boletin) {
-      return res.status(404).json({ error: 'No se ha encontrado el boletin' })
+      res.status(404).json({ error: 'No se ha encontrado el boletin' })
+      return
     }
 
     res.json({ boletin })
   } catch (err) {
     console.log('(fetchBoletinAlumno) Error al buscar boletin:', err)
-    res.status(500).json({ error: 'Error interno del servidor' })
+    if (!res.headersSent) res.status(500).json({ error: 'Error interno del servidor' })
   }
 }
 
@@ -85,13 +90,15 @@ const createBoletin = async (req, res) => {
     } = req.body
 
     if (!curso || !comision || !year || !alumno || !materias) {
-      return res.status(400).json({ error: 'Falta un campo' })
+      res.status(400).json({ error: 'Falta un campo' })
+      return
     }
 
     const boletinExistente = await Boletin.findOne({ alumno, comision })
 
     if (boletinExistente) {
       res.status(409).json({ error: 'Ya existe un boletin con esa comision para ese alumno' })
+      return
     }
 
     const resBoletin = await Boletin.create({
@@ -115,7 +122,7 @@ const createBoletin = async (req, res) => {
     res.json({ boletin })
   } catch (err) {
     console.log('(createBoletin) Error al crear boletin', err)
-    res.status(500).json({ error: 'Error interno del servidor' })
+    if (!res.headersSent) res.status(500).json({ error: 'Error interno del servidor' })
   }
 }
 
@@ -133,7 +140,8 @@ const updateBoletin = async (req, res) => {
 
     const boletinExistente = await Boletin.findById(id)
     if (!boletinExistente) {
-      return res.status(404).json({ error: 'No se ha encontrado el boletin' })
+      res.status(404).json({ error: 'No se ha encontrado el boletin' })
+      return
     }
 
     await Boletin.findByIdAndUpdate(id, {
@@ -158,7 +166,7 @@ const updateBoletin = async (req, res) => {
     res.json({ boletin })
   } catch (err) {
     console.log('(updateBoletin) Error al actualizar el boletin:', err)
-    res.status(500).json({ error: 'Error interno del servidor' })
+    if (!res.headersSent) res.status(500).json({ error: 'Error interno del servidor' })
   }
 }
 
@@ -169,13 +177,14 @@ const deleteBoletin = async (req, res) => {
     const boletin = await Boletin.findByIdAndDelete(id)
 
     if (!boletin) {
-      return res.status(404).json({ error: 'No se ha encontrado el boletin' })
+      res.status(404).json({ error: 'No se ha encontrado el boletin' })
+      return
     }
 
     res.json({ success: `Se ha eliminado el boletin ${boletin._id}` })
   } catch (err) {
     console.log('(deleteBoletin) Error al eliminar el boletin', err)
-    res.status(500).json({ error: 'Error interno del servidor' })
+    if (!res.headersSent) res.status(500).json({ error: 'Error interno del servidor' })
   }
 }
 

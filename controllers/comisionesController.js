@@ -11,7 +11,7 @@ const fetchComisiones = async (req, res) => {
     res.json({ comisiones })
   } catch (err) {
     console.log('(fetchComisiones) Error al obtener comisiones:', err)
-    res.status(500).json({ error: 'Error interno del servidor' })
+    if (!res.headersSent) res.status(500).json({ error: 'Error interno del servidor' })
   }
 }
 
@@ -29,7 +29,7 @@ const fetchComision = async (req, res) => {
     res.json({ comision })
   } catch (err) {
     console.log('(fetchComision) Error al obtener comisiones:', err)
-    res.status(500).json({ error: 'Error interno del servidor' })
+    if (!res.headersSent) res.status(500).json({ error: 'Error interno del servidor' })
   }
 }
 
@@ -76,7 +76,7 @@ const createComision = async (req, res) => {
     res.json({ comision })
   } catch (err) {
     console.log('(createComision) Error al crear comision', err)
-    res.status(500).json({ error: 'Error interno del servidor' })
+    if (!res.headersSent) res.status(500).json({ error: 'Error interno del servidor' })
   }
 }
 
@@ -116,7 +116,7 @@ const updateComision = async (req, res) => {
     res.json({ comision })
   } catch (err) {
     console.log('(updateComision) Error al actualizar la comision:', err)
-    res.status(500).json({ error: 'Error interno del servidor' })
+    if (!res.headersSent) res.status(500).json({ error: 'Error interno del servidor' })
   }
 }
 
@@ -133,7 +133,7 @@ const deleteComision = async (req, res) => {
     res.json({ success: `Se ha eliminado la comision ${comision.numero}` })
   } catch (err) {
     console.log('(deleteComision) Error al eliminar la comision', err)
-    res.status(500).json({ error: 'Error interno del servidor' })
+    if (!res.headersSent) res.status(500).json({ error: 'Error interno del servidor' })
   }
 }
 
@@ -154,7 +154,7 @@ const deleteComisiones = async (req, res) => {
     res.json({ success: `Se han eliminado ${comisiones.deletedCount} comisiones` })
   } catch (err) {
     console.log('(deleteComisiones) Error al eliminar las comisiones', err)
-    res.status(500).json({ error: 'Error interno del servidor' })
+    if (!res.headersSent) res.status(500).json({ error: 'Error interno del servidor' })
   }
 }
 

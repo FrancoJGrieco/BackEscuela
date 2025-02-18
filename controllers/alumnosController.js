@@ -19,8 +19,8 @@ const fetchAlumnos = async (req, res) => {
       })
     res.json({ alumnos })
   } catch (err) {
-    console.log('(fetchAlumnos) Error al obtener alumnos:', err)
-    res.status(500).json({ error: 'Error interno del servidor' })
+    console.error('(fetchAlumnos) Error al obtener alumnos:', err)
+    if (!res.headersSent) res.status(500).json({ error: 'Error interno del servidor' })
   }
 }
 
@@ -42,12 +42,15 @@ const fetchAlumno = async (req, res) => {
         ]
       })
 
-    if (!alumno) { return res.status(404).json({ error: 'Alumno no encontrado' }) }
+    if (!alumno) {
+      res.status(404).json({ error: 'Alumno no encontrado' })
+      return
+    }
 
     res.json({ alumno })
   } catch (err) {
     console.error('(fetchAlumno) Error al obtener el alumno:', err)
-    res.status(500).json({ message: 'Error interno del servidor' })
+    if (!res.headersSent) res.status(500).json({ message: 'Error interno del servidor' })
   }
 }
 
@@ -57,18 +60,20 @@ const fetchAlumnoByDNI = async (req, res) => {
 
     if (!dni) {
       res.status(400).json({ error: 'Se requiere un DNI' })
+      return
     }
 
     const alumno = await Alumno.findOne({ dni })
 
     if (!alumno) {
-      return res.status(404).json({ error: 'No se ha encontrado el alumno' })
+      res.status(404).json({ error: 'No se ha encontrado el alumno' })
+      return
     }
 
     res.json({ alumno })
   } catch (err) {
     console.log('(fetchAlumnoByDNI) Error al buscar alumno:', err)
-    res.status(500).json({ error: 'Error interno del servidor' })
+    if (!res.headersSent) res.status(500).json({ error: 'Error interno del servidor' })
   }
 }
 
@@ -83,13 +88,15 @@ const createAlumno = async (req, res) => {
     } = req.body
 
     if (!dni || !nombre || !apellido || !mail || !nacimiento) {
-      return res.status(400).json({ error: 'Falta un campo' })
+      res.status(400).json({ error: 'Falta un campo' })
+      return
     }
 
     const alumnoExistente = await Alumno.findOne({ dni })
 
     if (alumnoExistente) {
       res.status(409).json({ error: 'Ya existe un alumno con ese DNI' })
+      return
     }
 
     const alumno = await Alumno.create({
@@ -104,7 +111,7 @@ const createAlumno = async (req, res) => {
     res.json({ alumno })
   } catch (err) {
     console.log('(createAlumno) Error al crear alumno', err)
-    res.status(500).json({ error: 'Error interno del servidor' })
+    if (!res.headersSent) res.status(500).json({ error: 'Error interno del servidor' })
   }
 }
 
@@ -123,7 +130,8 @@ const updateAlumno = async (req, res) => {
 
     const alumnoExistente = await Alumno.findById(id)
     if (!alumnoExistente) {
-      return res.status(404).json({ error: 'No se ha encontrado el alumno' })
+      res.status(404).json({ error: 'No se ha encontrado el alumno' })
+      return
     }
 
     await Alumno.findByIdAndUpdate(id, {
@@ -140,7 +148,7 @@ const updateAlumno = async (req, res) => {
     res.json({ alumno })
   } catch (err) {
     console.log('(updateAlumno) Error al actualizar el alumno:', err)
-    res.status(500).json({ error: 'Error interno del servidor' })
+    if (!res.headersSent) res.status(500).json({ error: 'Error interno del servidor' })
   }
 }
 
@@ -151,13 +159,14 @@ const deleteAlumno = async (req, res) => {
     const alumno = await Alumno.findByIdAndDelete(id)
 
     if (!alumno) {
-      return res.status(404).json({ error: 'No se ha encontrado el alumno' })
+      res.status(404).json({ error: 'No se ha encontrado el alumno' })
+      return
     }
 
     res.json({ success: `Se ha eliminado el alumno ${alumno.nombre}` })
   } catch (err) {
     console.log('(deleteAlumno) Error al eliminar el alumno', err)
-    res.status(500).json({ error: 'Error interno del servidor' })
+    if (!res.headersSent) res.status(500).json({ error: 'Error interno del servidor' })
   }
 }
 const deleteAlumnos = async (req, res) => {
@@ -165,7 +174,8 @@ const deleteAlumnos = async (req, res) => {
     const _ids = req.body._ids
 
     if (!Array.isArray(_ids) || _ids.length === 0) {
-      return res.status(400).json({ error: 'Debe proporcionar un array de IDs valido' })
+      res.status(400).json({ error: 'Debe proporcionar un array de IDs valido' })
+      return
     }
 
     const alumnosBoletines = await Alumno.find({ _id: { $in: _ids } })
@@ -173,7 +183,8 @@ const deleteAlumnos = async (req, res) => {
     const alumnos = await Alumno.deleteMany({ _id: { $in: _ids } })
 
     if (alumnos.deletedCount === 0) {
-      return res.status(404).json({ error: 'No se encontraron alumnos para eliminar' })
+      res.status(404).json({ error: 'No se encontraron alumnos para eliminar' })
+      return
     }
 
     await Comision.updateMany(
@@ -188,7 +199,7 @@ const deleteAlumnos = async (req, res) => {
     res.json({ success: `Se han eliminado ${alumnos.deletedCount} alumnos` })
   } catch (err) {
     console.log('(deleteAlumnos) Error al eliminar los alumnos', err)
-    res.status(500).json({ error: 'Error interno del servidor' })
+    if (!res.headersSent) res.status(500).json({ error: 'Error interno del servidor' })
   }
 }
 

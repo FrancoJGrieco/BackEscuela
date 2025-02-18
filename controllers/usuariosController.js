@@ -7,16 +7,19 @@ async function signup (req, res) {
     const { user, password } = req.body
 
     if (!user || !password) {
-      return res.status(400).json({ error: 'Usuario y contraseña son obligatorios' })
+      res.status(400).json({ error: 'Usuario y contraseña son obligatorios' })
+      return
     }
 
     if (password.length < 6) {
-      return res.status(400).json({ error: 'La contraseña debe tener al menos 6 caracteres' })
+      res.status(400).json({ error: 'La contraseña debe tener al menos 6 caracteres' })
+      return
     }
 
     const usuarioExistente = await Usuario.findOne({ user })
     if (usuarioExistente) {
-      return res.status(409).json({ error: 'El usuario ya existe' })
+      res.status(409).json({ error: 'El usuario ya existe' })
+      return
     }
 
     const hashedPassword = bcrypt.hashSync(password, 8)
@@ -26,7 +29,7 @@ async function signup (req, res) {
     res.sendStatus(201)
   } catch (err) {
     console.error('Error en signup:', err)
-    res.status(500).json({ error: 'Error interno del servidor' })
+    if (!res.headersSent) res.status(500).json({ error: 'Error interno del servidor' })
   }
 }
 async function login (req, res) {
@@ -34,17 +37,20 @@ async function login (req, res) {
     const { user, password } = req.body
 
     if (!user || !password) {
-      return res.status(400).json({ error: 'Usuario y contraseña son obligatorios' })
+      res.status(400).json({ error: 'Usuario y contraseña son obligatorios' })
+      return
     }
 
     const usuario = await Usuario.findOne({ user })
     if (!usuario) {
-      return res.status(401).json({ error: 'Credenciales inválidas' })
+      res.status(401).json({ error: 'Credenciales inválidas' })
+      return
     }
 
     const passwordMatch = await bcrypt.compare(password, usuario.password)
     if (!passwordMatch) {
-      return res.status(401).json({ error: 'Credenciales inválidas' })
+      res.status(401).json({ error: 'Credenciales inválidas' })
+      return
     }
 
     const exp = Date.now() + 1000 * 60 * 60 * 24 * 30
@@ -60,7 +66,7 @@ async function login (req, res) {
     res.status(200).json({ success: 'Login exitoso', token })
   } catch (err) {
     console.error('Error en login:', err)
-    res.status(500).json({ error: 'Error interno del servidor' })
+    if (!res.headersSent) res.status(500).json({ error: 'Error interno del servidor' })
   }
 }
 function logout (req, res) {
@@ -69,14 +75,15 @@ function logout (req, res) {
     res.status(200).json({ success: 'Logout exitoso' })
   } catch (err) {
     console.error('Error en logout:', err)
-    res.status(500).json({ error: 'Error interno del servidor' })
+    if (!res.headersSent) res.status(500).json({ error: 'Error interno del servidor' })
   }
 }
 
 function checkAuth (req, res) {
   try {
     if (!req.cookies.Authorization) {
-      return res.status(401).json({ error: 'No autenticado' })
+      res.status(401).json({ error: 'No autenticado' })
+      return
     }
     const token = req.cookies.Authorization
     const decoded = jwt.verify(token, process.env.SECRET)
