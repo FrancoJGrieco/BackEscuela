@@ -43,7 +43,8 @@ const createMateriaBoletin = async (req, res) => {
     const materiaBoletin = await MateriaBoletin.create({
       boletin: null,
       materia,
-      notas
+      notas,
+      promedio: '0'
     })
 
     console.log(materiaBoletin)
@@ -63,9 +64,10 @@ const updateMateriaBoletin = async (req, res) => {
 
     const {
       boletin,
-      materia,
       notas
     } = req.body
+
+    const promedio = (notas.reduce((accumulator, currentValue) => accumulator + parseInt(currentValue), 0) / notas.length).toFixed(2)
 
     const materiaBoletinExistente = await MateriaBoletin.findById(id)
     if (!materiaBoletinExistente) {
@@ -74,8 +76,8 @@ const updateMateriaBoletin = async (req, res) => {
 
     await MateriaBoletin.findByIdAndUpdate(id, {
       boletin,
-      materia,
-      notas
+      notas,
+      promedio
     })
 
     const materiaBoletin = await MateriaBoletin.findById(id).populate('materia')

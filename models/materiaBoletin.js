@@ -9,7 +9,8 @@ const materiaBoletinSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Materia'
   },
-  notas: []
+  notas: [],
+  promedio: String
 })
 
 const MateriaBoletin = mongoose.model('MateriaBoletin', materiaBoletinSchema)
