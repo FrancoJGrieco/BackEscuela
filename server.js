@@ -1,5 +1,4 @@
 const express = require('express')
-const connectToDb = require('./config/connectToDb.js')
 const cors = require('cors')
 const cookieParser = require('cookie-parser')
 
@@ -19,7 +18,6 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 const app = express()
-connectToDb()
 correrMigracion()
 
 app.use(express.json())

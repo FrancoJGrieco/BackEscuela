@@ -8,6 +8,7 @@ const Curso = require('../models/curso')
 const Comision = require('../models/comision')
 const Materia = require('../models/materia')
 const Usuario = require('../models/usuario')
+const connectToDb = require('../config/connectToDb')
 
 mongoose.connect('mongodb://localhost:27017/Escuela').then(() => console.log('Conectado a MongoDB'))
   .catch(err => console.error('Error conectando a MongoDB', err))
@@ -131,14 +132,14 @@ const ejecutarMigracionUsuarios = async () => {
 }
 
 module.exports.correrMigracion = () => {
+  connectToDb()
   Promise.all([
     ejecutarMigracionComisiones(),
     ejecutarMigracionCursos(),
     ejecutarMigracionMaterias(),
     ejecutarMigracionAlumnos(),
     ejecutarMigracionUsuarios()
-  ]).then(() => mongoose.connection.close())
-    .catch((err) => {
-      console.log('No se ha podido hacer la migracion: ', err)
-    })
+  ]).catch((err) => {
+    console.log('No se ha podido hacer la migracion: ', err)
+  })
 }

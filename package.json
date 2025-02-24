@@ -24,7 +24,7 @@
     "mongoose": "8.3.4"
   },
   "devDependencies": {
-    "nodemon": "3.1.0",
+    "nodemon": "^3.1.0",
     "standard": "17.1.0"
   },
   "eslintConfig": {

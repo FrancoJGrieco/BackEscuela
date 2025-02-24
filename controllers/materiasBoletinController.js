@@ -90,6 +90,7 @@ const updateMateriaBoletin = async (req, res) => {
 const deleteMateriaBoletin = async (req, res) => {
   try {
     const id = req.params.id
+    console.log('ID:', id)
 
     const materiaBoletin = await MateriaBoletin.findByIdAndDelete(id)
 

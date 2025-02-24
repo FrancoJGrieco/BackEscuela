@@ -109,6 +109,8 @@ const updateComision = async (req, res) => {
       .filter((materia) => materia.year === year)
       .map((materia) => materia._id)
 
+    console.log('Materias:', materiasYear)
+
     await Comision.findByIdAndUpdate(id, { numero, year, curso, materias: materiasYear, alumnos })
 
     const comision = await Comision.findById(id)
