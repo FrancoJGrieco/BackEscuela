@@ -27,9 +27,6 @@ Permitiendo la creación, modificación, eliminación y consulta de información
 ├── middleware/      # Middlewares para autenticación, validaciones, etc.
 ├── migrations/      # Migraciones de base de datos
 ├── models/          # Modelos de datos
-├── routes/          # Definición de rutas (VER)
-├── services/        # Lógica de negocio y conexión a BD (VER)
-├── .env             # Variables de entorno
 ├── api.http         # Pruebas de API en VSCode
 ├── package.json     # Dependencias del proyecto
 ├── server.js        # Punto de entrada del servidor
