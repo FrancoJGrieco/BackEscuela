@@ -42,7 +42,7 @@ async function login (req, res) {
       return res.status(401).json({ success: false, message: 'Credenciales inválidas' })
     }
 
-    const passwordMatch = await bcrypt.compare(password, usuario.password)
+    const passwordMatch = await bcrypt.compareSync(password, usuario.password)
     if (!passwordMatch) {
       return res.status(401).json({ success: false, message: 'Credenciales inválidas' })
     }

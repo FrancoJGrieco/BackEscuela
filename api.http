@@ -48,13 +48,19 @@ POST http://localhost:3030/login
 content-type: application/json
 
 {
-    "user": "franco3@mail.com",
-    "password": "franco123"
+    "user": "admin@mail.com",
+    "password": "admin123"
 }
 
 ####
 
 GET http://localhost:3030/check-auth
+content-type: application/json
+
+{
+    "user": "admin@mail.com",
+    "password": "admin123"
+}
 
 ####
 
