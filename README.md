@@ -49,7 +49,7 @@ npm install
 Crea un archivo `.env` en la raíz con los siguientes valores:
 ```
 PORT=3030
-DB_URL=mongodb://localhost:27017/escuela
+DB_URL=mongodb://localhost:27017/Escuela
 SECRET=sladkjfñljsdapofksdhafh
 ```
 
