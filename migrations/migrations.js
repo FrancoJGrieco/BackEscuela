@@ -1,4 +1,3 @@
-const mongoose = require('mongoose')
 const bcrypt = require('bcryptjs')
 
 require('dotenv').config()
@@ -10,8 +9,8 @@ const Materia = require('../models/materia')
 const Usuario = require('../models/usuario')
 const connectToDb = require('../config/connectToDb')
 
-mongoose.connect('mongodb://localhost:27017/Escuela').then(() => console.log('Conectado a MongoDB'))
-  .catch(err => console.error('Error conectando a MongoDB', err))
+// mongoose.connect('mongodb://localhost:27017/Escuela').then(() => console.log('Conectado a MongoDB'))
+//   .catch(err => console.error('Error conectando a MongoDB', err))
 
 const ejecutarMigracionAlumnos = async () => {
   try {
