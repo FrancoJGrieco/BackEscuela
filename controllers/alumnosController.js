@@ -4,7 +4,6 @@ const Comision = require('../models/comision')
 
 const fetchAlumnos = async (req, res) => {
   try {
-    console.log('hola')
     const alumnos = await Alumno.find()
       .populate({
         path: 'boletines',
