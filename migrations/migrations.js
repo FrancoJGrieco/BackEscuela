@@ -130,15 +130,20 @@ const ejecutarMigracionUsuarios = async () => {
   }
 }
 
-module.exports.correrMigracion = () => {
-  connectToDb()
-  Promise.all([
-    ejecutarMigracionComisiones(),
-    ejecutarMigracionCursos(),
-    ejecutarMigracionMaterias(),
-    ejecutarMigracionAlumnos(),
-    ejecutarMigracionUsuarios()
-  ]).catch((err) => {
-    console.log('No se ha podido hacer la migracion: ', err)
-  })
+async function correrMigracion () {
+  try {
+    await connectToDb()
+    await Promise.all([
+      ejecutarMigracionComisiones(),
+      ejecutarMigracionCursos(),
+      ejecutarMigracionMaterias(),
+      ejecutarMigracionAlumnos(),
+      ejecutarMigracionUsuarios()
+    ])
+    console.log('Migraciones ejecutadas correctamente')
+  } catch (err) {
+    console.error('No se ha podido hacer la migración:', err)
+  }
 }
+
+module.exports = { correrMigracion }

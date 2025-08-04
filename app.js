@@ -11,14 +11,20 @@ const boletinesController = require('./controllers/boletinesController.js')
 const materiasboletinController = require('./controllers/materiasBoletinController.js')
 
 const requireAuth = require('./middleware/requireAuth.js')
-const { correrMigracion } = require('./migrations/migrations.js')
+const connectToDb = require('./config/connectToDb.js')
+// const { correrMigracion } = require('./migrations/migrations.js')
 
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
 }
-
+if (process.env.NODE_ENV !== 'test') {
+  const { correrMigracion } = require('./migrations/migrations.js')
+  correrMigracion()
+} else {
+  connectToDb()
+}
 const app = express()
-correrMigracion()
+// correrMigracion()
 
 app.use(express.json())
 app.use(cookieParser())
@@ -86,8 +92,10 @@ app.delete('/materias_boletin/:id', requireAuth, materiasboletinController.delet
 
 app.use(alumnosController.errorPage)
 
-const PORT = process.env.PORT ?? 3031
+// const PORT = process.env.PORT ?? 3031
 
-app.listen(PORT, () => {
-  console.log(`server listening on port http://localhost:${PORT}`)
-})
+// app.listen(PORT, () => {
+//   console.log(`server listening on port http://localhost:${PORT}`)
+// })
+
+module.exports = app
