@@ -4,7 +4,8 @@
   "description": "Backend del proyecto de Programación III",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon server.js",
+    "dev": "nodemon index.js",
+    "start": "nodemon index.js",
     "test": "jest"
   },
   "keywords": [

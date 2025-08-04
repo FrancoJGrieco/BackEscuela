@@ -9,9 +9,6 @@ const Materia = require('../models/materia')
 const Usuario = require('../models/usuario')
 const connectToDb = require('../config/connectToDb')
 
-// mongoose.connect('mongodb://localhost:27017/Escuela').then(() => console.log('Conectado a MongoDB'))
-//   .catch(err => console.error('Error conectando a MongoDB', err))
-
 const ejecutarMigracionAlumnos = async () => {
   try {
     const alumno = await Alumno.findOne({ dni: '40015527' })

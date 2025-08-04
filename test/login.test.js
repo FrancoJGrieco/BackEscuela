@@ -9,11 +9,11 @@ const connectToDb = require('../config/connectToDb')
 const mongoose = require('mongoose')
 
 beforeAll(async () => {
-  await connectToDb() // usando la misma función del backend
+  await connectToDb()
 })
 
 afterAll(async () => {
-  await mongoose.connection.close() // 👈 importante
+  await mongoose.connection.close()
 })
 
 describe('POST /login', () => {
@@ -22,6 +22,6 @@ describe('POST /login', () => {
       .post('/login')
       .send({ email: 'usuario@noexiste.com', password: 'malpass' })
 
-    expect(res.statusCode).toBe(400) // o el código que devuelva tu backend
+    expect(res.statusCode).toBe(400)
   })
 })
