@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 
 async function connectToDb () {
   try {
-    console.log('Connection to database:', process.env.DB_URL)
+    console.log('Connecting to database:', process.env.DB_URL)
     await mongoose.connect(process.env.DB_URL, {
       ssl: false
     })
