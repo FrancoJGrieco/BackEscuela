@@ -39,7 +39,7 @@ app.use(cors({
 // Rutas cuentas
 app.post('/signup', usuariosController.signup)
 app.post('/login', usuariosController.login)
-app.get('/logout', requireAuth, usuariosController.logout)
+app.post('/logout', requireAuth, usuariosController.logout)
 app.get('/check-auth', requireAuth, usuariosController.checkAuth)
 
 // Rutas alumnos

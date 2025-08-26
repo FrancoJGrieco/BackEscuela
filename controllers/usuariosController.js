@@ -47,7 +47,7 @@ async function login (req, res) {
       return res.status(401).json({ success: false, message: 'Credenciales inválidas' })
     }
 
-    const exp = Date.now() + 1000 * 60 * 60 * 24 * 30
+    const exp = Date.now() + 1000 * 60 * 60 * 8
     const token = jwt.sign({ sub: usuario._id, exp }, process.env.SECRET)
 
     res.cookie('Authorization', token, {
@@ -64,6 +64,7 @@ async function login (req, res) {
   }
 }
 function logout (req, res) {
+  console.log('logout')
   try {
     res.clearCookie('Authorization')
     res.status(200).json({ success: 'Logout exitoso' })

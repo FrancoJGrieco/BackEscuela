@@ -11,8 +11,7 @@ const usuarioSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true
-  },
-  alumnos: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Alumno' }]
+  }
 })
 const Usuario = mongoose.model('Usuario', usuarioSchema)
 
